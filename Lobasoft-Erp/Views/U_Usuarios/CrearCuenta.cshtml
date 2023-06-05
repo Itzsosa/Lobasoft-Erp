@@ -1,0 +1,47 @@
+﻿@model Lobasoft_Erp.Models.LBS_Usuario
+@{
+    ViewData["Title"] = "CrearCuenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Crear Cuenta</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          
+
+            @*Mensaje en caso que exista un error*@
+            @if (TempData["MensajeError"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    <strong>@TempData["MensajeError"]</strong>
+                </div>
+            }
+            <form asp-action="CrearCuenta"  method="post">
+                <div class="form-group">
+                    <label asp-for="U_correo" class="form-label">Email</label>
+                    <input type="email" asp-for="U_correo" class="form-control" placeholder="nombre@dominio.com" />
+                    <span asp-validation-for="U_correo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="U_contrasena" class="control-label">Password</label>
+                    <input asp-for="U_contrasena" class="form-control" />
+                    <span asp-validation-for="U_contrasena" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="U_nombreUsuario" class="control-label">Nombre de usuario</label>
+                    <input asp-for="U_nombreUsuario" class="form-control" />
+                    <span asp-validation-for="U_nombreUsuario" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

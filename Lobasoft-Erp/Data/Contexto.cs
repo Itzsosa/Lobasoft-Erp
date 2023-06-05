@@ -12,6 +12,6 @@ namespace Lobasoft_Erp.Data
 
         public DbSet<LBS_Proveedores> LBS_Proveedores { get; set; }
 
-        public DbSet<LBS_Usuario> LBS_Usuario { get; set; }
+        public DbSet<LBS_Usuario> LBS_Usuarios { get; set; }
     }
 }

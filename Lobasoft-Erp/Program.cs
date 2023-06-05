@@ -2,6 +2,15 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Se configura el esquema de autenticación por medio de cookies en la aplicación web
+
+builder.Services.AddAuthentication("CookieAuthentication").AddCookie("CookieAuthentication",
+        config =>
+        {
+            config.Cookie.Name = "UserLoginCookie";
+            config.LoginPath = "/Usuarios/Login";
+        });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
