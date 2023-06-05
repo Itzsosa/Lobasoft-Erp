@@ -29,6 +29,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Proveedor" asp-action="Index">Proveedores</a>
                         </li>
                     </ul>
+                    <ul class="nav nav-tabs ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link  text-black Nav-a dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Logout">
+                                    Cerrar Sesión
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-black Nav-a dropdown-item" asp-controller="Usuario" asp-action="Login">
+                                    Iniciar sesión
+                                </a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
