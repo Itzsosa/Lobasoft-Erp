@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Lobasoft_Erp.Models
 
 {
-    public class Proveedor
+    public class LBS_Proveedores
     {
         [Key]
         public int Id { get; set; }

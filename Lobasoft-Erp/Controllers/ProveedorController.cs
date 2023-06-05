@@ -21,14 +21,26 @@ namespace Lobasoft_Erp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _contexto.Proveedor.ToListAsync());
+            return View(await _contexto.LBS_Proveedores.ToListAsync());
         }
-        
+
         // GET: ProveedorController/Details/5
-        public ActionResult Details(int id)
+
+        public async Task<ActionResult> Details(int? id)
         {
-            return View();
+            var temp = await _contexto.LBS_Proveedores.FindAsync(id);
+
+            if (temp == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                return View(temp);
+            }
         }
+
 
         // GET: ProveedorController/Create
         [HttpGet]
@@ -40,7 +52,7 @@ namespace Lobasoft_Erp.Controllers
         // POST: ProveedorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Proveedor proveedor)
+        public ActionResult Create(LBS_Proveedores proveedor)
         {
             try
             {
@@ -56,45 +68,71 @@ namespace Lobasoft_Erp.Controllers
         }
 
         // GET: ProveedorController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+            var temp = await _contexto.LBS_Proveedores.FindAsync(id);
+
+            if (temp == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                return View(temp);
+            }
         }
 
         // POST: ProveedorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, LBS_Proveedores proveedor)
         {
+            if (id != proveedor.Id)
+            {
+                return NotFound();
+            }
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                _contexto.Update(proveedor);
+                _contexto.SaveChanges();
+                return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                Console.WriteLine("Error");
+                return View(proveedor);
             }
         }
 
         // GET: ProveedorController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public async Task<ActionResult> Delete(int? id)
         {
-            return View();
+            var temp = await _contexto.LBS_Proveedores.FindAsync(id);
+
+            if (temp == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(temp);
+            }
         }
 
         // POST: ProveedorController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var temp = await _contexto.LBS_Proveedores.FindAsync(id);
+            _contexto.LBS_Proveedores.Remove(temp);
+            await _contexto.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }
