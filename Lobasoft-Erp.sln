@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lobasoft-Erp", "Lobasoft-Erp\Lobasoft-Erp.csproj", "{B5228E83-7713-404F-AC5B-65D7F53ADC49}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5228E83-7713-404F-AC5B-65D7F53ADC49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5228E83-7713-404F-AC5B-65D7F53ADC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5228E83-7713-404F-AC5B-65D7F53ADC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5228E83-7713-404F-AC5B-65D7F53ADC49}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C11BC87D-FDDA-41CB-A81C-932052D85745}
+	EndGlobalSection
+EndGlobal
