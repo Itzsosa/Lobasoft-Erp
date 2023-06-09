@@ -53,23 +53,28 @@ BEGIN
 	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
 	VALUES ('Reggy', 'SelacomeToda', 'admin@example.com', 'Admin', 'activo');
 
-
+	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
+	VALUES ('Reggy', 'siselacome', 'user@example.com', 'Cliente', 'activo');
 END
 GO
 
 drop table LBS_Usuarios
-
-
 select * from LBS_Usuarios;
 
 
 
-create table  LBS_AreaComercial(
+
+--Tabla de LBS_AreaComercial
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AreaComercial')
+BEGIN
+    create table  LBS_AreaComercial(
 	Id INT PRIMARY KEY IDENTITY(1,1),
     NombreAreaComercial VARCHAR(200) NOT NULL,
-    Descripcion VARCHAR(200) NOT NULL
-)
-go
+    Descripcion VARCHAR(200) NOT NULL);
 
-drop table LBS_AreaComercial;
+	INSERT INTO LBS_AreaComercial (NombreAreaComercial,Descripcion)
+	VALUES ('Pescaderia', 'Area comercial de pescaderos');
+END
+GO
 
+select * from LBS_AreaComercial

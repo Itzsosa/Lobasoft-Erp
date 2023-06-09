@@ -22,7 +22,7 @@ BEGIN
         Email VARCHAR(100) NOT NULL
     );
 
-    -- Insertar datos de ejemplo en la tabla Usuario
+    -- Insertar datos de ejemplo en la tabla Proveedores
     INSERT INTO LBS_Proveedores (nombre, provincia, canton, distrito,direccion, telefono,email)
     VALUES ('Suministros Industriales S.A.', 'Puntarenas', 'Central', 'El Roble','200 norte', '88888888','suministros@gmail.com');
 
@@ -53,11 +53,56 @@ BEGIN
 	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
 	VALUES ('Reggy', 'SelacomeToda', 'admin@example.com', 'Admin', 'activo');
 
-
+	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
+	VALUES ('Reggy', 'siselacome', 'user@example.com', 'Cliente', 'activo');
 END
 GO
 
 drop table LBS_Usuarios
-
-
 select * from LBS_Usuarios;
+
+
+--Tabla de LBS_AreaComercial
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AreaComercial')
+BEGIN
+    create table  LBS_AreaComercial(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+    NombreAreaComercial VARCHAR(200) NOT NULL,
+    Descripcion VARCHAR(200) NOT NULL);
+
+	INSERT INTO LBS_AreaComercial (NombreAreaComercial,Descripcion)
+	VALUES ('Pescaderia', 'Area comercial de pescaderos');
+END
+GO
+
+select * from LBS_AreaComercial
+
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AreaComercial')
+BEGIN
+    create table  LBS_AreaComercial(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+    NombreAreaComercial VARCHAR(200) NOT NULL,
+    Descripcion VARCHAR(200) NOT NULL);
+
+	INSERT INTO LBS_AreaComercial (NombreAreaComercial,Descripcion)
+	VALUES ('Pescaderia', 'Area comercial de pescaderos');
+END
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AsignacionAreaProveedor')
+BEGIN
+    create table  LBS_AsignacionAreaProveedor(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+    A_idAreaComercial INT NOT NULL,
+    A_idProveedor INT NOT NULL,
+	FOREIGN KEY (A_idAreaComercial) REFERENCES LBS_AreaComercial(Id) ON DELETE CASCADE,
+    FOREIGN KEY (A_idProveedor) REFERENCES LBS_Proveedores(Id) ON DELETE CASCADE
+	);
+
+	INSERT INTO LBS_AsignacionAreaProveedor (A_idAreaComercial,A_idProveedor)
+	VALUES ((Select id from LBS_AreaComercial where id = 1), (Select id from LBS_AreaComercial where id = 1));
+END
+
+select * from LBS_AreaComercial
+select * from LBS_Proveedores
+select * from LBS_AsignacionAreaProveedor

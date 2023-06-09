@@ -41,7 +41,8 @@ namespace Lobasoft_Erp.Controllers
                     var userClaims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, temp.U_nombreUsuario),
-                        new Claim(ClaimTypes.Email, temp.U_correo)
+                        new Claim(ClaimTypes.Email, temp.U_correo),
+                        new Claim(ClaimTypes.Role, temp.U_rol),
                     };
 
                     //Se crea la instancia para la entidad del usuario y el tipo de autenticación
@@ -53,11 +54,10 @@ namespace Lobasoft_Erp.Controllers
                     HttpContext.SignInAsync(userPrincipal);
 
                   
-                    return RedirectToAction("Index", "Proveedor");
+                    return RedirectToAction("Index", "Home");
                 
             }
-
-       
+            
             TempData["Mensaje"] = "Error, el usuario o password incorrecto";
 
             

@@ -9,7 +9,10 @@
 
 <h4>Proveedor</h4>
 <hr />
+
 <div class="row">
+    <div class="col-md-4">
+    </div>
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -28,14 +31,6 @@
                 <input asp-for="Provincia" class="form-control" />
                 <span asp-validation-for="Provincia" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-
-                <label asp-for="Canton" class="control-label"></label>
-                <input asp-for="Canton" class="form-control" />
-                <span asp-validation-for="Canton" class="text-danger"></span>
-            </div>
-
             <div class="form-group">
                 <label asp-for="Canton" class="control-label"></label>
                 <input asp-for="Canton" class="form-control" />
@@ -61,17 +56,45 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            <div class="form-group my-2">
+                <label class="control-label">Area Comercial</label>
+                <select class="form-select" id="multiple-select-field" data-placeholder="Choose anything" multiple name="areasComercialesSeleccionadas[]">
+                    @foreach (var areaComercial in ViewBag.AreasComerciales)
+                    {
+                        <option value="@areaComercial.Id">@areaComercial.NombreAreaComercial</option>
+                    }
+                </select>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#multiple-select-field').select2({
+                theme: "bootstrap-5",
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+                placeholder: $(this).data('placeholder'),
+                closeOnSelect: false,
+            });
+
+            $('#multiple-select-field').on('change', function () {
+                var selectedValues = $(this).val();
+                $('#areasComercialesSeleccionadas').val(selectedValues);
+            });
+        });
+    </script>
 }

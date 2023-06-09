@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Lobasoft_Erp.Models;
 using Lobasoft_Erp.Data;
-using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Lobasoft_Erp.Controllers
 {
     public class ProveedorController : Controller
     {
-
         private readonly Contexto _contexto;
 
         public ProveedorController(Contexto contexto)
@@ -25,7 +24,6 @@ namespace Lobasoft_Erp.Controllers
         }
 
         // GET: ProveedorController/Details/5
-
         public async Task<ActionResult> Details(int? id)
         {
             var temp = await _contexto.LBS_Proveedores.FindAsync(id);
@@ -34,38 +32,54 @@ namespace Lobasoft_Erp.Controllers
             {
                 return NotFound();
             }
-
             else
             {
                 return View(temp);
             }
         }
 
-
         // GET: ProveedorController/Create
         [HttpGet]
         public ActionResult Create()
         {
+            var areasComerciales = _contexto.LBS_AreaComercial.Select(a => new { a.Id, a.NombreAreaComercial }).ToList();
+            ViewBag.AreasComerciales = areasComerciales;
             return View();
         }
 
         // POST: ProveedorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(LBS_Proveedores proveedor)
+        public async Task<IActionResult> Create(LBS_Proveedores proveedor, int[] areasComercialesSeleccionadas)
         {
-            try
+            if (proveedor.Nombre!="")
             {
                 _contexto.Add(proveedor);
-                _contexto.SaveChanges();
-                return RedirectToAction("Index");
+                await _contexto.SaveChangesAsync();
+
+                if (areasComercialesSeleccionadas != null)
+                {
+                    foreach (var areaComercialId in areasComercialesSeleccionadas)
+                    {
+                        var asignacionAreaProveedor = new LBS_AsignacionAreaProveedor
+                        {
+                            A_idProveedor = proveedor.Id,
+                            A_idAreaComercial = areaComercialId
+                        };
+
+                        _contexto.Add(asignacionAreaProveedor);
+                        await _contexto.SaveChangesAsync();
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                Console.WriteLine("Error");
-                return View(proveedor);
-            }
+
+            var areasComerciales = _contexto.LBS_AreaComercial.Select(a => new { a.Id, a.NombreAreaComercial }).ToList();
+            ViewBag.AreasComerciales = areasComerciales;
+
+            return View(proveedor);
         }
+
 
         // GET: ProveedorController/Edit/5
         [HttpGet]
@@ -77,7 +91,6 @@ namespace Lobasoft_Erp.Controllers
             {
                 return NotFound();
             }
-
             else
             {
                 return View(temp);
