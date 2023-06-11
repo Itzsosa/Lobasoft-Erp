@@ -23,22 +23,31 @@
             </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control"/>
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Provincia" class="control-label"></label>
-                <input asp-for="Provincia" class="form-control" />
+                <select class="form-select" id="provinciaSelect">
+                    <option value="">Seleccione una provincia</option>
+                </select>
+                <input asp-for="Provincia" class="form-control" id="Provincia"  hidden/>
                 <span asp-validation-for="Provincia" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Canton" class="control-label"></label>
-                <input asp-for="Canton" class="form-control" />
+                <select class="form-select" id="cantonSelect" disabled>
+                    <option value="">Seleccione una Canton</option>
+                </select>
+                <input asp-for="Canton" class="form-control" id="Canton"  hidden/>
                 <span asp-validation-for="Canton" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Distrito" class="control-label"></label>
-                <input asp-for="Distrito" class="form-control" />
+                <select class="form-select" id="distritoSelect" disabled>
+                    <option value="">Seleccione una provincia</option>
+                </select>
+                <input asp-for="Distrito" class="form-control" id="Distrito" hidden/>
                 <span asp-validation-for="Distrito" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -53,7 +62,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input type="email" asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group my-2">
@@ -95,6 +104,87 @@
                 var selectedValues = $(this).val();
                 $('#areasComercialesSeleccionadas').val(selectedValues);
             });
+
+            // Función para llenar el select de provincias
+            function fillProvinciaSelect() {
+                var provinciaSelect = $("#provinciaSelect");
+                $.get("https://ubicaciones.paginasweb.cr/provincias.json", function (data) {
+                    $.each(data, function (key, value) {
+                        provinciaSelect.append("<option value='" + key + "'>" + value + "</option>");
+                    });
+                });
+            }
+
+            // Función para llenar el select de cantones
+            function fillCantonSelect(provinciaId) {
+                var cantonSelect = $("#cantonSelect");
+                cantonSelect.empty();
+                cantonSelect.append("<option value=''>Seleccione un cantón</option>");
+
+                if (provinciaId !== "") {
+                    var url = "https://ubicaciones.paginasweb.cr/provincia/" + provinciaId + "/cantones.json";
+                    $.get(url, function (data) {
+                        $.each(data, function (key, value) {
+                            cantonSelect.append("<option value='" + key + "'>" + value + "</option>");
+                        });
+                        cantonSelect.prop("disabled", false);
+                    });
+                } else {
+                    cantonSelect.prop("disabled", true);
+                }
+            }
+
+            // Función para llenar el select de distritos
+            function fillDistritoSelect(provinciaId, cantonId) {
+                var distritoSelect = $("#distritoSelect");
+                distritoSelect.empty();
+                distritoSelect.append("<option value=''>Seleccione un distrito</option>");
+
+                if (provinciaId !== "" && cantonId !== "") {
+                    var url = "https://ubicaciones.paginasweb.cr/provincia/" + provinciaId + "/canton/" + cantonId + "/distritos.json";
+                    $.get(url, function (data) {
+                        $.each(data, function (key, value) {
+                            distritoSelect.append("<option value='" + key + "'>" + value + "</option>");
+                        });
+                        distritoSelect.prop("disabled", false);
+                    });
+                } else {
+                    distritoSelect.prop("disabled", true);
+                }
+            }
+
+            // Evento de cambio para el select de provincia
+            $("#provinciaSelect").on("change", function () {
+                var provinciaId = $(this).val();
+                fillCantonSelect(provinciaId);
+                fillDistritoSelect(provinciaId, "");
+            });
+
+            // Evento de cambio para el select de cantón
+            $("#cantonSelect").on("change", function () {
+                var provinciaId = $("#provinciaSelect").val();
+                var cantonId = $(this).val();
+                fillDistritoSelect(provinciaId, cantonId);
+            });
+
+            // Llenar el select de provincias al cargar la página
+            fillProvinciaSelect();
+
+            $("form").submit(function () {
+                // Obtener los valores seleccionados
+                var provinciaTexto = $("#provinciaSelect option:selected").text();
+                var cantonTexto = $("#cantonSelect option:selected").text();
+                var distritoTexto = $("#distritoSelect option:selected").text();
+
+                // Asignar los valores a los campos ocultos
+                $("#Provincia").val(provinciaTexto);
+                $("#Canton").val(cantonTexto);
+                $("#Distrito").val(distritoTexto);
+
+                // Continuar con el envío del formulario
+                return true;
+            });
         });
+
     </script>
 }

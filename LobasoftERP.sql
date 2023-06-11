@@ -77,18 +77,6 @@ GO
 
 select * from LBS_AreaComercial
 
-
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AreaComercial')
-BEGIN
-    create table  LBS_AreaComercial(
-	Id INT PRIMARY KEY IDENTITY(1,1),
-    NombreAreaComercial VARCHAR(200) NOT NULL,
-    Descripcion VARCHAR(200) NOT NULL);
-
-	INSERT INTO LBS_AreaComercial (NombreAreaComercial,Descripcion)
-	VALUES ('Pescaderia', 'Area comercial de pescaderos');
-END
-
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AsignacionAreaProveedor')
 BEGIN
     create table  LBS_AsignacionAreaProveedor(

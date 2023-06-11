@@ -62,8 +62,6 @@ drop table LBS_Usuarios
 select * from LBS_Usuarios;
 
 
-
-
 --Tabla de LBS_AreaComercial
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AreaComercial')
 BEGIN
