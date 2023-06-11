@@ -94,3 +94,7 @@ END
 select * from LBS_AreaComercial
 select * from LBS_Proveedores
 select * from LBS_AsignacionAreaProveedor
+
+
+
+---Hola
