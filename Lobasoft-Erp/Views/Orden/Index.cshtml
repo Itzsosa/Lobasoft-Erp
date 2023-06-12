@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Lobasoft_Erp.Models.LBS_Proveedores>
+
+@using Lobasoft_Erp.Controllers
+
+@{
+    ViewData["Title"] = "Consultar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Consultar Áreas Comerciales</h1>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="?">
+            <div class="form-group">
+                <label class="control-label">Área Comercial</label>
+                <select class="form-select" id="areaComercialSelect" required>
+                    <option value="">
+                        Seleccione Área Comercial
+                    </option>
+                    @foreach (var ac in ViewData["AreasComerciales"] as List<Lobasoft_Erp.Models.LBS_AreaComercial>)
+                    {
+                        <option value="@ac.Id">@ac.NombreAreaComercial</option>
+                    }
+                </select>
+               
+            </div>
+
+            <div class="form-group">
+                <label  class="control-label">Provincia</label>
+                <select class="form-select" id="provinciaSelect">
+                    <option value="">Seleccione una provincia</option>
+                </select>
+                <input class="form-control" id="Provincia" hidden />
+                <span  class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Cantón</label>
+                <select class="form-select" id="cantonSelect" disabled>
+                    <option value="">Seleccione una cantón</option>
+                </select>
+                <input  class="form-control" id="Canton" hidden />
+                <span  class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Distrito</label>
+                <select class="form-select" id="distritoSelect" disabled>
+                    <option value="">Seleccione una distrito</option>
+                </select>
+                <input  class="form-control" id="Distrito" hidden />
+                <span  class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th colspan="4" class="text-center table-success">Proveedores en la zona</th>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Provincia)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="proveedoresTableBody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Provincia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Contactar_@item.Id">
+                                Contactar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@foreach (var item in Model)
+{
+
+    <div class="modal fade" id="Contactar_@item.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="modal-body justify-content-center">
+                    @Html.Partial("Contactar",  new Lobasoft_Erp.Models.Contactar())
+                </div>
+                <div class="modal-footer"> 
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var areaComercialSelect = document.getElementById("areaComercialSelect");
+            var proveedoresTableBody = document.getElementById("proveedoresTableBody");
+
+            areaComercialSelect.addEventListener("change", function () {
+                var areaComercialId = this.value;
+                if (areaComercialId) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "/Orden/ObtenerProveedoresPorAreaComercial?areaComercialId=" + areaComercialId, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            proveedoresTableBody.innerHTML = "";
+                            data.forEach(function (item) {
+                                var row = "<tr>" +
+                                    "<td>" + item.Nombre + "</td>" +
+                                    "<td>" + item.Provincia + "</td>" +
+                                    "<td>" + item.Email + "</td>" +
+                                    "<td>" +
+                                    "<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Contactar_" + item.Id + "'>Contactar</button>" +
+                                    "</td>" +
+                                    "</tr>";
+                                proveedoresTableBody.innerHTML += row;
+                            });
+                        }
+                    };
+                    xhr.send();
+                } else {
+                    proveedoresTableBody.innerHTML = "";
+                }
+            });
+        });
+    </script>
+}
