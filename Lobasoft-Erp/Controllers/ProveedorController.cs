@@ -4,6 +4,7 @@ using Lobasoft_Erp.Models;
 using Lobasoft_Erp.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Lobasoft_Erp.Controllers
 {
@@ -147,5 +148,7 @@ namespace Lobasoft_Erp.Controllers
 
             return RedirectToAction("Index");
         }
+
+    
     }
 }
