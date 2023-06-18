@@ -50,16 +50,35 @@ namespace Lobasoft_Erp.Controllers
             return View();
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> ObtenerProveedoresPorAreaComercial(int areaComercialId)
+        //{
+        //    var proveedores = await _context.LBS_Proveedores
+        //        .Where(p => _context.LBS_AsignacionAreaProveedor
+        //            .Any(a => a.A_idProveedor == p.Id && a.A_idAreaComercial == areaComercialId))
+        //        .ToListAsync();
+
+        //    return Json(proveedores);
+        //}
+
         [HttpGet]
         public async Task<IActionResult> ObtenerProveedoresPorAreaComercial(int areaComercialId)
         {
             var proveedores = await _context.LBS_Proveedores
                 .Where(p => _context.LBS_AsignacionAreaProveedor
                     .Any(a => a.A_idProveedor == p.Id && a.A_idAreaComercial == areaComercialId))
+                .Select(p => new LBS_ProveedoresFiltro
+                {
+                    Nombre = p.Nombre,
+                    Provincia = p.Provincia,
+                    Email = p.Email
+                })
                 .ToListAsync();
 
+         
             return Json(proveedores);
         }
+
 
 
     }

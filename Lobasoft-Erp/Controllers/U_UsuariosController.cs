@@ -118,15 +118,23 @@ namespace Lobasoft_Erp.Controllers
                 user.U_estado = "Activo";
                 user.U_rol = "Cliente";
 
-                
-
-                _contexto.LBS_Usuarios.Add(user);
+                //se asigna una contraseña
+                user.U_contrasena = this.GenerarClave();
 
                 try
-                {        
-                    _contexto.SaveChanges();
-
-                    TempData["MensajeCreado"] = "Usuario creado correctamente. Puede iniciar sesión";
+                {
+                    //se envia el email al usuario
+                    if (this.EnviarEmail(user))
+                    {
+                        _contexto.LBS_Usuarios.Add(user);
+                        _contexto.SaveChanges();
+                        //mensaje si todo salio bien
+                        TempData["MensajeCreado"] = "Usuario creado correctamente.Su contraseña fue envia por correo.";
+                    }
+                    else
+                    {
+                        TempData["MensajeCreado"] = "Usuario creado pero no se envió el email. Comuniquese el administrador";
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -140,6 +148,43 @@ namespace Lobasoft_Erp.Controllers
                 return View();
             }
         }//cierre método
+
+        private string GenerarClave()
+        {
+            Random random = new Random();
+            string clave = string.Empty;
+            clave = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            //se genera una contraseña 
+            return new string(Enumerable.Repeat(clave, 12).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private bool EnviarEmail(LBS_Usuario temp)
+        {
+            try
+            {
+                //variable control
+                bool enviado = false;
+
+                //se instancia el object 
+                Email email = new Email();
+
+                //se utiliza el método enviar con los datos del usuario
+                //se envia los datos del usuario como parámetro
+                email.EnviarCorreoRegistro(temp);
+
+                //se indica que todo salió bien
+                enviado = true;
+
+                //se envia la variable control
+                return enviado;
+            }
+            catch (Exception ex)
+            {
+                //en caso de un error se indica que no fue enviado  la información
+                return false;
+            }
+        }
 
 
     }
