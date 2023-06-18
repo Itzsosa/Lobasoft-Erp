@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Area Comercial</h1>
+<h1>Proveedor</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -68,7 +68,7 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
+                @*@Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |*@
                     @Html.ActionLink("Details", "Details", new {  id=item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             </td>
