@@ -27,17 +27,17 @@ BEGIN
     VALUES ('Suministros Industriales S.A.', 'Puntarenas', 'Central', 'El Roble','200 norte', '88888888','suministros@gmail.com');
 
     INSERT INTO LBS_Proveedores (nombre, provincia, canton, distrito,direccion, telefono,email)
-    VALUES ('Pescadores del Pacífico', 'Puntarenas', 'Central', 'El Roble','300 norte', '88888888','tecnologia@gmail.com'),
-	       ('Tecnología Avanzada Ltda.', 'Puntarenas', 'Central', 'El Roble','300 norte', '88888888','tecnologia@gmail.com'),
-	       ('Quesería Queso Badilla', 'Alajuela', 'San Carlos', 'Pocosol','300 norte', '88888888','quesos@gmail.com'),
-	       ('Carnes el Pedazo', 'Cartago', 'Central', 'El Roble','300 norte', '88888888','carnes@gmail.com');
+    VALUES ('Pescadores del Pacï¿½fico', 'Puntarenas', 'Central', 'El Roble','300 norte', '88888888','tecnologia@gmail.com'),
+	    			('Tecnologï¿½a Avanzada Ltda.', 'Puntarenas', 'Central', 'El Roble','300 norte', '88888888','tecnologia@gmail.com'),
+	      		('Queserï¿½a Queso Badilla', 'Alajuela', 'San Carlos', 'Pocosol','300 norte', '88888888','quesos@gmail.com'),
+	      		('Carnes el Pedazo', 'Cartago', 'Central', 'El Roble','300 norte', '88888888','carnes@gmail.com');
 END
 GO
 
 Delete LBS_Proveedores
 drop table LBS_Proveedores
 
----- LobasAmi1234 contraseña de perfil del string de conexion
+---- LobasAmi1234 contraseï¿½a de perfil del string de conexion
 select * from LBS_Proveedores;
 
 --Tabla de usuarios ------------------------------------------------------------
@@ -77,7 +77,7 @@ BEGIN
 	INSERT INTO LBS_AreaComercial (NombreAreaComercial,Descripcion)
 	VALUES ('Pescaderia', 'Area comercial de pescaderos'),
 	       ('Lacteos', 'Area comercial de Lacteos'),
-		   ('Carnicería', 'Area comercial de carnes');
+		   ('Carnicerï¿½a', 'Area comercial de carnes');
 END
 GO
 Delete from LBS_AreaComercial

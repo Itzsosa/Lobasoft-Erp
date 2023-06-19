@@ -16,6 +16,17 @@ namespace Lobasoft_Erp.Controllers
             _context = context;
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> Consultar()
+        //{
+        //    //var proveedores = await _contexto.LBS_Proveedores.ToListAsync();
+        //    //var areasComerciales = await ObternerAreasComerciales();
+
+        //    //ViewData["Proveedores"] = proveedores;
+        //    //ViewData["AreasComerciales"] = areasComerciales;
+
+        //    return View(await _contexto.LBS_Proveedores.ToListAsync());
+        //}
         public async Task<List<LBS_AreaComercial>> ObternerAreasComerciales()
         {
             List<LBS_AreaComercial> lista = new List<LBS_AreaComercial>();
@@ -113,7 +124,6 @@ namespace Lobasoft_Erp.Controllers
          
             return Json(proveedores);
         }
-
 
 
     }

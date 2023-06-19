@@ -75,7 +75,6 @@ namespace Lobasoft_Erp.Controllers
 
             //por medio del ORM buscamos en nuestra base de datos un usuario con el email correspondiente
             var user = _contexto.LBS_Usuarios.FirstOrDefault(U => U.U_correo == temp.U_correo);
-
             //user contiene datos
             if (user != null)
             {
