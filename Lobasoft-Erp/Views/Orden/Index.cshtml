@@ -6,7 +6,22 @@
     ViewData["Title"] = "Consultar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (TempData["CorreoEnviado"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        <strong>@TempData["CorreoEnviado"]</strong>
+    </div>
 
+}
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        <strong>@TempData["MensajeError"]</strong>
+    </div>
+
+}
 <h1 class="text-center">Consultar Áreas Comerciales</h1>
 
 
@@ -101,19 +116,19 @@
 
 @foreach (var item in Model)
 {
-
     <div class="modal fade" id="Contactar_@item.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content ">
                 <div class="modal-body justify-content-center">
-                    @Html.Partial("Contactar",  new Lobasoft_Erp.Models.Contactar())
+                    @Html.Partial("Contactar", new Lobasoft_Erp.Models.Contactar { CorreoProveedor = item.Email })
                 </div>
-                <div class="modal-footer"> 
+                <div class="modal-footer">
                 </div>
             </div>
         </div>
     </div>
 }
+
 
 
 @section Scripts {

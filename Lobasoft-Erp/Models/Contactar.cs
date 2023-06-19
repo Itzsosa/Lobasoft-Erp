@@ -1,4 +1,6 @@
-﻿namespace Lobasoft_Erp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Lobasoft_Erp.Models
 {
     public class Contactar
     {
@@ -6,6 +8,8 @@
 
         public string Descripcion { get; set; }
 
-        public string CorreoProveedor { get; set;}
+        [Required]
+        [EmailAddress]
+        public string CorreoProveedor { get; set; }
     }
 }

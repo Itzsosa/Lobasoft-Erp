@@ -74,6 +74,67 @@ namespace Lobasoft_Erp.Models
             }
         }
 
+        public void EnviarCorreoContacto(Contactar contactar, string correoUsuario)
+        {
+            try
+            {
+                // Se crea una instancia del objeto MailMessage
+                MailMessage email = new MailMessage();
+
+                // Asunto
+                email.Subject = contactar.Asunto;
+
+                // Destinatarios
+                email.To.Add(new MailAddress(correoUsuario)); // Dirección del correo del administrador
+                email.To.Add(new MailAddress(contactar.CorreoProveedor)); // Dirección de correo del proveedor
+
+                // Emisor del correo
+                email.From = new MailAddress(correoUsuario);
+
+
+                // Contenido del email
+                string html = "<html>";
+                html += "<body>";
+                html += "<h1>Correo de contacto</h1>";
+                html += "Descripción del correo:";
+                html += "<li><b></b> " + contactar.Descripcion + "</li>";
+                html += "</body>";
+                html += "</html>";
+
+                // Se indica el contenido en HTML
+                email.IsBodyHtml = true;
+                email.Body = html;
+
+                // Configuración del protocolo de comunicación SMTP
+                SmtpClient smtp = new SmtpClient();
+
+                // Servidor de correo a utilizar
+                smtp.Host = "smtp.gmail.com";
+
+                // Puerto de comunicación
+                smtp.Port = 587;
+
+                // Indica si se utiliza SSL
+                smtp.EnableSsl = true;
+
+                // Se indican las credenciales de autenticación
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("lobasofterp@gmail.com", "btqdqkapcucxagsl");
+
+                // Método para enviar el email
+                smtp.Send(email);
+
+                // Se liberan las instancias de los objetos
+                email.Dispose();
+                smtp.Dispose();
+            }
+            catch (Exception ex)
+            {
+                // Se retorna el error en caso de que exista
+                throw ex;
+            }
+        }
+
 
 
 
