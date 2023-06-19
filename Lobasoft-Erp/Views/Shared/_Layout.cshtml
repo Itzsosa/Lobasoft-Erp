@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Lobasoft_Erp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -23,29 +23,29 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="orden" asp-action="Index">Realizar orden</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="orden" asp-action="Index">Realizar orden</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="LBS_AreaComercial" asp-action="Index">AreaComercial</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="LBS_AreaComercial" asp-action="Index">AreaComercial</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Proveedor" asp-action="Index">Proveedores</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Proveedor" asp-action="Index">Proveedores</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Orden" asp-action="Index">Realizar Orden</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Orden" asp-action="Index">Realizar Orden</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Proveedor" asp-action="Index">Consultar Ordenes</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Proveedor" asp-action="Index">Consultar Ordenes</a>
                                 </li>
                             }
                         }
@@ -83,7 +83,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link  text-black Nav-a dropdown-item" asp-area="" asp-controller="U_Usuarios" asp-action="Logout">
+                                <a class="nav-link  text-light Nav-a dropdown-item" asp-area="" asp-controller="U_Usuarios" asp-action="Logout">
                                     Cerrar Sesión
                                 </a>
                             </li>
@@ -91,7 +91,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-black Nav-a dropdown-item" asp-controller="U_Usuarios" asp-action="Login">
+                                <a class="nav-link text-light Nav-a dropdown-item" asp-controller="U_Usuarios" asp-action="Login">
                                     Iniciar sesión
                                 </a>
                             </li>
@@ -107,7 +107,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted text-center">
         <div class="container">
             &copy; 2023 - Lobasoft_Erp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

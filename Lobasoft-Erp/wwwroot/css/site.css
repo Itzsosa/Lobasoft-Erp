@@ -16,3 +16,47 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+body {
+    background-color: #ebeaea;
+}
+/* Personaliza el navbar */
+.navbar {
+    background-color: #212529; /* Color de fondo oscuro para el navbar */
+}
+
+/* Personaliza los inputs */
+.form-control {
+    color: #fff; /* Color de texto claro para los inputs */
+    border-color: #666; /* Color de borde oscuro para los inputs */
+}
+
+/* Personaliza los selects */
+.form-select {
+    background-color: #333; /* Color de fondo oscuro para los selects */
+    color: #fff; /* Color de texto claro para los selects */
+    border-color: #666; /* Color de borde oscuro para los selects */
+}
+
+/* Personaliza los botones */
+/*.btn {
+    background-color: #007bff; 
+    color: #fff; 
+}*/
+
+/* Personaliza las tablas */
+.table {
+    background-color: #333; /* Color de fondo oscuro para las tablas */
+    color: #fff; /* Color de texto claro para las tablas */
+}
+
+@media (max-width: 768px) {
+    /* Estilos para pantallas menores a 768px de ancho */
+    #miDiv {
+        /* Estilos específicos para el div en pantallas pequeñas */
+    }
+
+        #miDiv img {
+            /* Estilos específicos para la imagen en pantallas pequeñas */
+        }
+}
