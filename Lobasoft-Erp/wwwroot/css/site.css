@@ -27,7 +27,7 @@ body {
 
 /* Personaliza los inputs */
 .form-control {
-    color: #fff; /* Color de texto claro para los inputs */
+    /*color: #fff;  Color de texto claro para los inputs */
     border-color: #666; /* Color de borde oscuro para los inputs */
 }
 

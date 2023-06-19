@@ -60,6 +60,9 @@ BEGIN
 
 	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
 	VALUES ('Brandon', 'bran123', 'brandonchavarria13@gmail.com', 'Cliente', 'activo');
+
+	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
+	VALUES ('Itzsosa', 'Sosa1234', 'lmausosa23@gmail.com', 'Cliente', 'Activo');
 END
 GO
 
@@ -83,7 +86,6 @@ END
 GO
 Delete from LBS_AreaComercial
 select * from LBS_AreaComercial
-Drop table 
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_AsignacionAreaProveedor')
 BEGIN
