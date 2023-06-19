@@ -122,7 +122,7 @@ Drop table LBS_AsignacionAreaProveedor
 --    WHERE a.A_idAreaComercial = @areaComercialId;
 --END
 
-CREATE PROCEDURE Sp_FiltrarProveedoresPorAreaComercial
+CREATE PROCEDURE Sp_FiltroProveedores
     @areaComercialId INT = NULL,
     @provincia VARCHAR(50) = NULL,
     @canton VARCHAR(50) = NULL,
@@ -138,7 +138,7 @@ BEGIN
         AND (@distrito IS NULL OR p.Distrito = @distrito)
 END
 
-EXEC Sp_FiltrarProveedoresPorAreaComercial @areaComercialId = 1;
+EXEC Sp_FiltroProveedores @areaComercialId = 1;
 
 
 EXEC Sp_FiltrarProveedoresPorAreaComercial @areaComercialId =2, @provincia='Puntarenas', @canton=null, @distrito=null

@@ -42,7 +42,7 @@ namespace Lobasoft_Erp.Controllers
 
             if (temp != null)
             {
-                    var userClaims = new List<Claim>()
+                var userClaims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, temp.U_nombreUsuario),
                         new Claim(ClaimTypes.Email, temp.U_correo),

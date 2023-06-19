@@ -25,9 +25,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
+<<<<<<< Updated upstream
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="orden" asp-action="Index">Realizar orden</a>
                         </li>
+=======
+>>>>>>> Stashed changes
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
