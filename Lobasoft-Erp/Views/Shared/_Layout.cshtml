@@ -25,6 +25,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Orden" asp-action="Index">Consultar proveedores</a>
+                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
@@ -48,6 +51,35 @@
                         }
                     </ul>
                     <ul class="nav nav-tabs ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="nav" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-user fa-lg" style="color: #cc6400;"></i>
+                                </a>
+                                <ul class="dropdown-menu navega">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li class="nav-item">
+                                            <span class="dropdown-item" style="font-size: smaller;">
+                                                @User.FindFirst(ClaimTypes.Email)?.Value
+                                            </span>
+                                        </li>
+                                        <li class="nav-item">
+                                            <span class="dropdown-item" style="font-size: smaller;">
+                                                @User.Identity.Name
+                                            </span>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-black dropdown-item" style="font-size: smaller;" href="@Url.Action("CambiarPassword", "U_Usuarios", new { Email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value })">
+                                                Cambiar contraseña
+                                            </a>
+                                        </li>
+
+                                    }
+                                </ul>
+                            </li>
+                        }
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -89,6 +121,8 @@
         
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/d7bdf83437.js" crossorigin="anonymous"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

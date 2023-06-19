@@ -14,7 +14,7 @@
         <div class="col-sm-4">
             @if (TempData["Mensaje"] != null)
             {
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-danger" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     <strong>@TempData["Mensaje"]</strong>
                 </div>
@@ -23,7 +23,7 @@
             @*Mensaje cuando el usuario fue creado*@
             @if (TempData["MensajeCreado"] != null)
             {
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     <strong>@TempData["MensajeCreado"]</strong>
                 </div>
