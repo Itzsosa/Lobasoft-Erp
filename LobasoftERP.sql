@@ -5,6 +5,7 @@ BEGIN
 END
 GO
 
+
 -- Usar la base de datos
 USE LobasoftERP;
 GO
@@ -24,7 +25,7 @@ BEGIN
 
     -- Insertar datos de ejemplo en la tabla Proveedores
     INSERT INTO LBS_Proveedores (nombre, provincia, canton, distrito,direccion, telefono,email)
-    VALUES ('Suministros Industriales S.A.', 'Puntarenas', 'Central', 'El Roble','200 norte', '88888888','suministros@gmail.com');
+    VALUES ('Suministros Industriales S.A.', 'Puntarenas', 'Central', 'El Roble','200 norte', '88888888','brandonchf13@gmail.com');
 
     INSERT INTO LBS_Proveedores (nombre, provincia, canton, distrito,direccion, telefono,email)
     VALUES ('Pescadores del Pac�fico', 'Puntarenas', 'Central', 'El Roble','300 norte', '88888888','tecnologia@gmail.com'),
@@ -55,10 +56,10 @@ BEGIN
 
     -- Insertar datos de ejemplo en la tabla Usuario
 	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
-	VALUES ('Reggy', 'SelacomeToda', 'admin@example.com', 'Admin', 'activo');
+	VALUES ('Reggy', 'admin', 'admin@example.com', 'Admin', 'activo');
 
 	INSERT INTO LBS_Usuarios (U_nombreUsuario, U_contrasena, U_correo, U_rol, U_estado)
-	VALUES ('Reggy', 'siselacome', 'user@example.com', 'Cliente', 'activo');
+	VALUES ('Brandon', 'bran123', 'brandonchavarria13@gmail.com', 'Cliente', 'activo');
 END
 GO
 
@@ -99,10 +100,45 @@ BEGIN
 
 	INSERT INTO LBS_AsignacionAreaProveedor (A_idAreaComercial,A_idProveedor)
 	VALUES (2,3),(3,4),(1,5);
+	--INSERT INTO LBS_AsignacionAreaProveedor (A_idAreaComercial,A_idProveedor)
+	--VALUES ((Select id from LBS_AreaComercial where id = 1), (Select id from LBS_AreaComercial where id = 1));
 END
-
+-----------------------------------------------------------------------------------------------------------------------
 select * from LBS_AreaComercial
 select * from LBS_Proveedores
 select * from LBS_AsignacionAreaProveedor
 
 Drop table LBS_AsignacionAreaProveedor
+-----------------------------------------------------------------------------------------------------------------------
+--Procedimientos almacenados
+--Procedimiento que filtra los proveedores por 
+--CREATE PROCEDURE Sp_FiltrarProveedoresPorAreaComercial
+--    @areaComercialId INT
+--AS
+--BEGIN
+--    SELECT p.Id, p.Nombre, p.Provincia, p.Email
+--    FROM LBS_AsignacionAreaProveedor a
+--    INNER JOIN LBS_Proveedores p ON a.A_idProveedor = p.Id
+--    WHERE a.A_idAreaComercial = @areaComercialId;
+--END
+
+CREATE PROCEDURE Sp_FiltrarProveedoresPorAreaComercial
+    @areaComercialId INT = NULL,
+    @provincia VARCHAR(50) = NULL,
+    @canton VARCHAR(50) = NULL,
+    @distrito VARCHAR(50) = NULL
+AS
+BEGIN
+    SELECT DISTINCT p.Id, p.Nombre, p.Provincia,  p.Email
+    FROM LBS_Proveedores p
+    INNER JOIN LBS_AsignacionAreaProveedor a ON p.Id = a.A_idProveedor
+    WHERE (@areaComercialId IS NULL OR a.A_idAreaComercial = @areaComercialId)
+        AND (@provincia IS NULL OR p.Provincia = @provincia)
+        AND (@canton IS NULL OR p.Canton = @canton)
+        AND (@distrito IS NULL OR p.Distrito = @distrito)
+END
+
+EXEC Sp_FiltrarProveedoresPorAreaComercial @areaComercialId = 1;
+
+
+EXEC Sp_FiltrarProveedoresPorAreaComercial @areaComercialId =2, @provincia='Puntarenas', @canton=null, @distrito=null

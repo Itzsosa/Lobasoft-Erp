@@ -24,6 +24,8 @@
 }
 <h1 class="text-center">Consultar Áreas Comerciales</h1>
 
+<h1 class="text-center">Realizar Orden</h1>
+
 
 <div class="row">
     <div class="col-md-6">
@@ -39,38 +41,38 @@
                         <option value="@ac.Id">@ac.NombreAreaComercial</option>
                     }
                 </select>
-               
+
             </div>
 
             <div class="form-group">
-                <label  class="control-label">Provincia</label>
+                <label class="control-label">Provincia</label>
                 <select class="form-select" id="provinciaSelect">
                     <option value="">Seleccione una provincia</option>
                 </select>
                 <input class="form-control" id="Provincia" hidden />
-                <span  class="text-danger"></span>
+                <span class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Cantón</label>
                 <select class="form-select" id="cantonSelect" disabled>
                     <option value="">Seleccione una cantón</option>
                 </select>
-                <input  class="form-control" id="Canton" hidden />
-                <span  class="text-danger"></span>
+                <input class="form-control" id="Canton" hidden />
+                <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label  class="control-label">Distrito</label>
+                <label class="control-label">Distrito</label>
                 <select class="form-select" id="distritoSelect" disabled>
                     <option value="">Seleccione una distrito</option>
                 </select>
-                <input  class="form-control" id="Distrito" hidden />
-                <span  class="text-danger"></span>
+                <input class="form-control" id="Distrito" hidden />
+                <span class="text-danger"></span>
             </div>
         </form>
     </div>
 
     <div class="col-md-6">
-        <table class="table">
+        <table class="table" id="tabla">
             <thead>
                 <tr>
                     <th colspan="4" class="text-center table-success">Proveedores en la zona</th>
@@ -132,37 +134,165 @@
 
 @section Scripts {
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var areaComercialSelect = document.getElementById("areaComercialSelect");
-            var proveedoresTableBody = document.getElementById("proveedoresTableBody");
 
-            areaComercialSelect.addEventListener("change", function () {
-                var areaComercialId = this.value;
-                if (areaComercialId) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/Orden/ObtenerProveedoresPorAreaComercial?areaComercialId=" + areaComercialId, true);
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            var data = JSON.parse(xhr.responseText);
-                            proveedoresTableBody.innerHTML = "";
-                            data.forEach(function (item) {
-                                var row = "<tr>" +
-                                    "<td>" + item.Nombre + "</td>" +
-                                    "<td>" + item.Provincia + "</td>" +
-                                    "<td>" + item.Email + "</td>" +
-                                    "<td>" +
-                                    "<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Contactar_" + item.Id + "'>Contactar</button>" +
-                                    "</td>" +
-                                    "</tr>";
-                                proveedoresTableBody.innerHTML += row;
-                            });
-                        }
-                    };
-                    xhr.send();
-                } else {
-                    proveedoresTableBody.innerHTML = "";
-                }
+        //Funcion para llamar al filtro cuando se selecciona un area comercial
+        $(document).ready(function () {
+            $('#areaComercialSelect').change(function () {
+                filtroProveedores();
+            });
+
+            $('#provinciaSelect').change(function () {
+                filtroProveedores();
+            });
+
+            $('#cantonSelect').change(function () {
+                filtroProveedores();
+            });
+
+            $('#distritoSelect').change(function () {
+                filtroProveedores();
             });
         });
+
+
+        function filtroProveedores() {
+
+           
+            var SelectArea = parseInt($('#areaComercialSelect ').val(), 10);
+            var SelectProvincia = $('#provinciaSelect option:selected').text();
+            var SelectCanton = $('#cantonSelect option:selected').text();
+            var SelectDistrito = $('#distritoSelect option:selected').text();
+
+
+            console.log(SelectArea)
+            console.log(SelectProvincia)      
+            console.log(SelectCanton)
+            console.log(SelectDistrito)
+
+            $.ajax({
+
+                url: '/Orden/ObtenerProveedoresPorAreaComercial?areaComercialId=' + SelectArea +
+                    '&provincia=' + SelectProvincia +
+                    '&canton=' + SelectCanton +
+                    '&distrito=' + SelectDistrito,
+                type: 'GET',
+                success: function (response) {
+                    // Aquí puedes manejar la respuesta del controlador
+                    actualizarVista(response);
+
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    // Aquí puedes manejar los errores
+                    console.error(error);
+                }
+            });
+        }
+
+        //Funcion para actualizar la tabla
+        function actualizarVista(data) {
+            // Limpia el contenido anterior de la tabla
+            $('#proveedoresTableBody').empty();
+
+
+            var headers = Object.keys(data[0]);
+            var columnasMmostrar = ['nombre', 'provincia', 'email'];// columnas que quiero mostrar
+            var idProveedor; //id del proveedor 
+            // Itera sobre los objetos JSON y crea las filas de la tabla
+            data.forEach(function (item) {
+                var row = $('<tr>');
+                headers.forEach(function (header) {
+                   
+                    if (columnasMmostrar.includes(header)) {
+                        var cell = $('<td>').text(item[header]);
+
+                        row.append(cell);
+                    }
+                    if (header === 'id') {
+                        idProveedor = item[header]; 
+                    }
+
+                });
+                var contactButtonCell = $('<td>');
+
+                var contactButton = $('<button>').attr({
+                    type: 'button',
+                    class: 'btn btn-primary',
+                    'data-bs-toggle': 'modal',
+                    'data-bs-target': '#Contactar_' + idProveedor
+                }).text('Contactar');
+                contactButtonCell.append(contactButton);
+
+
+                row.append(contactButtonCell);
+                $('#tabla').append(row);
+            });
+        }// fin de la funcion filtroProveedores
+
+        // Función para llenar el select de provincias
+        function fillProvinciaSelect() {
+            var provinciaSelect = $("#provinciaSelect");
+            $.get("https://ubicaciones.paginasweb.cr/provincias.json", function (data) {
+                $.each(data, function (key, value) {
+                    provinciaSelect.append("<option value='" + key + "'>" + value + "</option>");
+                });
+            });
+        }
+
+        // Función para llenar el select de cantones
+        function fillCantonSelect(provinciaId) {
+            var cantonSelect = $("#cantonSelect");
+            cantonSelect.empty();
+            cantonSelect.append("<option value=''>Seleccione un cantón</option>");
+
+            if (provinciaId !== "") {
+                var url = "https://ubicaciones.paginasweb.cr/provincia/" + provinciaId + "/cantones.json";
+                $.get(url, function (data) {
+                    $.each(data, function (key, value) {
+                        cantonSelect.append("<option value='" + key + "'>" + value + "</option>");
+                    });
+                    cantonSelect.prop("disabled", false);
+                });
+            } else {
+                cantonSelect.prop("disabled", true);
+            }
+        }
+
+        // Función para llenar el select de distritos
+        function fillDistritoSelect(provinciaId, cantonId) {
+            var distritoSelect = $("#distritoSelect");
+            distritoSelect.empty();
+            distritoSelect.append("<option value=''>Seleccione un distrito</option>");
+
+            if (provinciaId !== "" && cantonId !== "") {
+                var url = "https://ubicaciones.paginasweb.cr/provincia/" + provinciaId + "/canton/" + cantonId + "/distritos.json";
+                $.get(url, function (data) {
+                    $.each(data, function (key, value) {
+                        distritoSelect.append("<option value='" + key + "'>" + value + "</option>");
+                    });
+                    distritoSelect.prop("disabled", false);
+                });
+            } else {
+                distritoSelect.prop("disabled", true);
+            }
+        }
+
+        // Evento de cambio para el select de provincia
+        $("#provinciaSelect").on("change", function () {
+            var provinciaId = $(this).val();
+            fillCantonSelect(provinciaId);
+            fillDistritoSelect(provinciaId, "");
+        });
+
+        // Evento de cambio para el select de cantón
+        $("#cantonSelect").on("change", function () {
+            var provinciaId = $("#provinciaSelect").val();
+            var cantonId = $(this).val();
+            fillDistritoSelect(provinciaId, cantonId);
+        });
+
+        // Llenar el select de provincias al cargar la página
+        fillProvinciaSelect();
+
     </script>
 }
