@@ -11,8 +11,8 @@ namespace Lobasoft_Erp.Controllers
     public class OrdenController : Controller
     {
         private readonly Contexto _context;
-        
-
+        private int idUsuario;
+        private int idProvedor;
         public OrdenController(Contexto context)
         {
             _context = context;
@@ -28,7 +28,7 @@ namespace Lobasoft_Erp.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> RealizarOrden()
         {
             List<LBS_AreaComercial> lista = await ObternerAreasComerciales();
             ViewData["AreasComerciales"] = lista;
@@ -45,10 +45,17 @@ namespace Lobasoft_Erp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Contactar(Contactar contactar)
         {
+            
+
             if (User.Identity.IsAuthenticated)
             {
                 // Obtener el correo electrónico del usuario autenticado
                 string correoUsuario = User.FindFirst(ClaimTypes.Email)?.Value;
+
+                var usuario = _context.LBS_Usuarios.ToList().Find(x => x.U_correo == correoUsuario);
+
+                this.idUsuario = usuario.U_idUsuario;
+                Create(this.idUsuario, contactar.IdProveedor, contactar.Asunto, contactar.Descripcion);
 
                 //se envia el email al usuario
                 if (this.EnviarEmail(contactar, correoUsuario))
@@ -61,7 +68,7 @@ namespace Lobasoft_Erp.Controllers
                     TempData["MensajeError"] = "¡Hubo un error, no se pudo enviar el correo!";
                 }
 
-                return RedirectToAction("Index", "Orden");
+                return RedirectToAction("RealizarOrden", "Orden");
             }
             else
             {
@@ -101,7 +108,7 @@ namespace Lobasoft_Erp.Controllers
 
 
         [HttpGet]
-        public IActionResult ObtenerProveedoresPorAreaComercial(int? areaComercialId, string? provincia=null, string? canton=null, string? distrito= null)
+        public IActionResult FiltroProveedores(int? areaComercialId, string? provincia=null, string? canton=null, string? distrito= null)
         {
             
             if (provincia.Equals("Seleccione una provincia"))
@@ -125,20 +132,76 @@ namespace Lobasoft_Erp.Controllers
             return Json(proveedores);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> ObtenerProveedoresPorAreaComercial(int? areaComercialId)
-        //{
-        //    var proveedores = await _context.LBS_Proveedores
-        //            .Where(p => _context.LBS_AsignacionAreaProveedor
-        //                .Any(a => a.A_idProveedor == p.Id && a.A_idAreaComercial == areaComercialId))
-        //            .ToListAsync();
+        [HttpGet]
+        public async Task<IActionResult> ConsultarOrdenes()
+        {
+            string correoUsuario = User.FindFirst(ClaimTypes.Email)?.Value;
+            var ordenes = _context.SP_OrdenesPorUsuario.FromSqlRaw("EXEC SP_OrdenesPorUsuario @UsuarioCorreo",
+                new SqlParameter("@UsuarioCorreo", correoUsuario)).ToList();
 
-        //    return Json(proveedores);
-        //}
+            return View(ordenes);
+        }
+
+        public async Task<ActionResult> Details(int? id)
+        {
+            string correoUsuario = User.FindFirst(ClaimTypes.Email)?.Value;
+            var ordenes = _context.SP_OrdenesPorUsuario.FromSqlRaw("EXEC SP_OrdenesPorUsuario @UsuarioCorreo",
+                new SqlParameter("@UsuarioCorreo", correoUsuario)).ToList().Find(x => x.Id == id);
+
+            if (ordenes == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(ordenes);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Delete(int? id)
+        {
+            string correoUsuario = User.FindFirst(ClaimTypes.Email)?.Value;
+            var ordenes = _context.SP_OrdenesPorUsuario.FromSqlRaw("EXEC SP_OrdenesPorUsuario @UsuarioCorreo",
+                new SqlParameter("@UsuarioCorreo", correoUsuario)).ToList().Find(x => x.Id == id);
+            
+            if (ordenes == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(ordenes);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var temp = await _context.LBS_Ordenes.FindAsync(id);
+            _context.LBS_Ordenes.Remove(temp);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ConsultarOrdenes");
+        }
 
 
+        public async void Create(int idUsuario, int idProveedor,string asunto, string descripcion )
+        {
+           LBS_Ordenes orden= new LBS_Ordenes();
+
+            orden.O_IdUsuario = idUsuario;
+            orden.O_IdProveedor = idProveedor;
+            orden.O_Fecha = DateTime.Now;
+            orden.O_Asunto = asunto;
+            orden.O_Descripcion = descripcion;
 
 
+             _context.Add(orden);
+             await _context.SaveChangesAsync();      
+        }
 
-    }
+
+        }
 }

@@ -1,7 +1,12 @@
-﻿namespace Lobasoft_Erp.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+
+namespace Lobasoft_Erp.Models
 {
-    public class Orden
+    public class LBS_Ordenes
     {
+
+        [Key]
         public int O_IdOrden { get; set; }
 
         public int O_IdProveedor { get; set; }

@@ -122,7 +122,7 @@
         <div class="modal-dialog">
             <div class="modal-content ">
                 <div class="modal-body justify-content-center">
-                    @Html.Partial("Contactar", new Lobasoft_Erp.Models.Contactar { CorreoProveedor = item.Email })
+                    @Html.Partial("Contactar", new Lobasoft_Erp.Models.Contactar { CorreoProveedor = item.Email, IdProveedor=item.Id })
                 </div>
                 <div class="modal-footer">
                 </div>
@@ -134,7 +134,7 @@
 
 @section Scripts {
     <script>
-
+        var idProveedor;
         //Funcion para llamar al filtro cuando se selecciona un area comercial
         $(document).ready(function () {
             $('#areaComercialSelect').change(function () {
@@ -171,7 +171,7 @@
 
             $.ajax({
 
-                url: '/Orden/ObtenerProveedoresPorAreaComercial?areaComercialId=' + SelectArea +
+                url: '/Orden/FiltroProveedores?areaComercialId=' + SelectArea +
                     '&provincia=' + SelectProvincia +
                     '&canton=' + SelectCanton +
                     '&distrito=' + SelectDistrito,
@@ -222,10 +222,12 @@
                     'data-bs-target': '#Contactar_' + idProveedor
                 }).text('Contactar');
                 contactButtonCell.append(contactButton);
-
+                
 
                 row.append(contactButtonCell);
                 $('#tabla').append(row);
+
+               
             });
         }// fin de la funcion filtroProveedores
 

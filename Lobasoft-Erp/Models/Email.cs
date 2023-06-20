@@ -85,7 +85,7 @@ namespace Lobasoft_Erp.Models
                 email.Subject = contactar.Asunto;
 
                 // Destinatarios
-                email.To.Add(new MailAddress(correoUsuario)); // Dirección del correo del administrador
+                email.To.Add(new MailAddress(correoUsuario)); // Dirección del correo del usuario
                 email.To.Add(new MailAddress(contactar.CorreoProveedor)); // Dirección de correo del proveedor
 
                 // Emisor del correo
@@ -95,9 +95,9 @@ namespace Lobasoft_Erp.Models
                 // Contenido del email
                 string html = "<html>";
                 html += "<body>";
-                html += "<h1>Correo de contacto</h1>";
-                html += "Descripción del correo:";
-                html += "<li><b></b> " + contactar.Descripcion + "</li>";
+                html += "<h2>Correo de contacto: " +correoUsuario+"</h2>";
+                html += "<h3>Descripción de la orden: </h3>";
+                html += contactar.Descripcion;
                 html += "</body>";
                 html += "</html>";
 

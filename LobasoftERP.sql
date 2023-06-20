@@ -112,18 +112,9 @@ select * from LBS_AsignacionAreaProveedor
 
 Drop table LBS_AsignacionAreaProveedor
 -----------------------------------------------------------------------------------------------------------------------
---Procedimientos almacenados
---Procedimiento que filtra los proveedores por 
---CREATE PROCEDURE Sp_FiltrarProveedoresPorAreaComercial
---    @areaComercialId INT
---AS
---BEGIN
---    SELECT p.Id, p.Nombre, p.Provincia, p.Email
---    FROM LBS_AsignacionAreaProveedor a
---    INNER JOIN LBS_Proveedores p ON a.A_idProveedor = p.Id
---    WHERE a.A_idAreaComercial = @areaComercialId;
---END
+-----------------------------Procedimientos almacenados----------------------------------------------------------------
 
+--Procedimiento que filtra los proveedores por Area Comercial, Provincia, Canton, Distrito 
 CREATE PROCEDURE Sp_FiltroProveedores
     @areaComercialId INT = NULL,
     @provincia VARCHAR(50) = NULL,
@@ -141,6 +132,24 @@ BEGIN
 END
 
 EXEC Sp_FiltroProveedores @areaComercialId = 1;
+EXEC Sp_FiltroProveedores @areaComercialId =2, @provincia='Puntarenas', @canton=null, @distrito=null
+
+--Procedimiento que retorna las ordenes por usuario
+CREATE PROCEDURE SP_OrdenesPorUsuario
+    @UsuarioCorreo VARCHAR(60)
+AS
+BEGIN
+    SELECT o.O_idOrden AS Id,
+		   p.Nombre AS Nombre,
+		   p.Email AS Email,
+           o.O_Asunto AS Asunto,
+           o.O_Descripcion AS Descripcion,
+           o.O_Fecha AS Fecha
+    FROM LBS_Ordenes o
+	INNER JOIN LBS_Usuarios u ON o.O_IdUsuario = u.U_idUsuario
+    INNER JOIN LBS_Proveedores p ON o.O_IdProveedor = p.Id
+    WHERE u.U_correo = @UsuarioCorreo
+END
 
 
-EXEC Sp_FiltrarProveedoresPorAreaComercial @areaComercialId =2, @provincia='Puntarenas', @canton=null, @distrito=null
+EXEC SP_OrdenesPorUsuario @UsuarioCorreo= 'brandonchavarria13@gmail.com';
