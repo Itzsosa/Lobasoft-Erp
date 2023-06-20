@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Area Comercial</h1>
+<h1>Área Comercial</h1>
 
 <p>
-    <a class="btn btn-dark p-1 mt-2 mb-2" asp-action="Create">Create New</a>
+    <a class="btn btn-dark p-1 mt-2 mb-2" asp-action="Create">Crear nueva</a>
 </p>
 <table class="table">
     <thead>
@@ -38,9 +38,9 @@
                 @Html.DisplayFor(modelItem => item.Descripcion)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }, new { @class="btn btn-warning" }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.Id }, new { @class="btn btn-success" }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id }, new { @class="btn btn-danger" })
+                    @Html.ActionLink("Editar", "Edit", new {  id=item.Id }, new { @class="btn btn-warning" }) |
+                @Html.ActionLink("Detalles", "Details", new {  id=item.Id }, new { @class="btn btn-success" }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.Id }, new { @class="btn btn-danger" })
             </td>
         </tr>
 }

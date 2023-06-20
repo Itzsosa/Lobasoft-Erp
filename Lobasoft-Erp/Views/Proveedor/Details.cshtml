@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Detalles del proveedor</h1>
 
 <div>
-    <h4>Proveedor</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -62,6 +61,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id  }, new {@class="btn btn-warning p-1 mt-2 mb-2"}) |
-    <a class="btn btn-primary p-1 mt-2 mb-2" asp-action="Index">Back to List</a>
+    @Html.ActionLink("Editar", "Edit", new {  id = Model.Id  }, new {@class="btn btn-warning p-1 mt-2 mb-2"}) 
+    <a class="btn btn-primary p-1 mt-2 mb-2" asp-action="Index">Volver</a>
 </div>

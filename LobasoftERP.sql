@@ -105,12 +105,38 @@ BEGIN
 	--INSERT INTO LBS_AsignacionAreaProveedor (A_idAreaComercial,A_idProveedor)
 	--VALUES ((Select id from LBS_AreaComercial where id = 1), (Select id from LBS_AreaComercial where id = 1));
 END
+--Tabla de Ordenes ------------------------------------------------------------
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_Usuarios ')
+BEGIN
+    CREATE TABLE LBS_Ordenes  (
+		O_IdOrden INT PRIMARY KEY IDENTITY(1,1),
+		O_IdProveedor INT,
+		O_IdUsuario INT,
+		O_Fecha DATETIME NOT NULL DEFAULT getdate(),
+		O_Asunto VARCHAR(MAX) NOT NULL,
+		O_Descripcion VARCHAR(MAX) NOT NULL,
+		FOREIGN KEY (O_IdProveedor) REFERENCES LBS_Proveedores(Id) ON DELETE CASCADE,
+		FOREIGN KEY (O_IdUsuario) REFERENCES LBS_Usuarios(U_idUsuario) ON DELETE CASCADE
+);
+END
+
+INSERT INTO LBS_Ordenes(O_Asunto,O_Descripcion,O_idProveedor,O_idUsuario)
+	VALUES ('Pedido Mariscos', '30kg PG 15kg Corvina',1,2),
+	       ('Pedido Muebles Salon', 'Un saludo les hablo de la empresa X, me gustaria contactarme con el encargado de ventas para ver el catalogo de sus productos. ya que se necesitan encargar mobiliarios para una sucursal nueva',2,2),
+		   ('Pedido Mariscos', 'quieria saber si tienen pulpo de parte de la empresa X',1,3);
 -----------------------------------------------------------------------------------------------------------------------
 select * from LBS_AreaComercial
 select * from LBS_Proveedores
+select * from LBS_Usuarios
 select * from LBS_AsignacionAreaProveedor
+select * from LBS_Ordenes
+
+
+
 
 Drop table LBS_AsignacionAreaProveedor
+-----------------------------------------------------------------------------------------------------------------------
+
 -----------------------------------------------------------------------------------------------------------------------
 -----------------------------Procedimientos almacenados----------------------------------------------------------------
 

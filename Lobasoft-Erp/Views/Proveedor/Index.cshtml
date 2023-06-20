@@ -8,7 +8,7 @@
 <h1>Proveedor</h1>
 
 <p>
-    <a class="btn btn-dark p-1" asp-action="Create">Create New</a>
+    <a class="btn btn-dark p-1" asp-action="Create">Crear nuevo</a>
 </p>
 <table class="table">
     <thead>
@@ -69,8 +69,8 @@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |*@
-                @Html.ActionLink("Details", "Details", new {  id=item.Id }, new { @class="btn btn-success" }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id }, new { @class="btn btn-danger" })
+                @Html.ActionLink("Detalles", "Details", new {  id=item.Id }, new { @class="btn btn-success" }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.Id }, new { @class="btn btn-danger" })
             </td>
         </tr>
 }
