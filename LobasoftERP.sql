@@ -106,7 +106,7 @@ BEGIN
 	--VALUES ((Select id from LBS_AreaComercial where id = 1), (Select id from LBS_AreaComercial where id = 1));
 END
 --Tabla de Ordenes ------------------------------------------------------------
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_Usuarios ')
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LBS_Ordenes ')
 BEGIN
     CREATE TABLE LBS_Ordenes  (
 		O_IdOrden INT PRIMARY KEY IDENTITY(1,1),
